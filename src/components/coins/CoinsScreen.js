@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Http from '../../libs/http';
 import CoinsItem from './CoinsItem';
+import Colors from '../../res/colors';
 
 // API: https://www.coinlore.com/cryptocurrency-data-api
 
@@ -52,7 +53,7 @@ export default CoinsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: Colors.charade,
   },
   btn: {
     padding: 8,
