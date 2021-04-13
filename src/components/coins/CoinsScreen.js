@@ -1,33 +1,47 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import Http from '../../libs/http';
+import CoinsItem from './CoinsItem';
 
 // API: https://www.coinlore.com/cryptocurrency-data-api
 
 class CoinsScreen extends React.Component {
   state = {
     coins: [],
+    loading: true,
   };
 
   componentDidMount = async () => {
+    this.setState({ loading: true });
     const res = await Http.instance.get(
       'https://api.coinlore.net/api/tickers/',
     );
-    this.setState({ coins: res.data });
+    this.setState({ coins: res.data, loading: false });
   };
+
   handlePress = () => {
     console.log('go to detail', this.props);
     this.props.navigation.navigate('CoinDetail');
   };
+
   render() {
-    const { coins };
-    const { coins };
+    const { coins, loading } = this.state;
     return (
       <View style={styles.container}>
-        <Text>Coins Screen</Text>
-        <Pressable style={styles.btn} onPress={this.handlePress}>
-          <Text style={styles.btnText}>Coins Screen</Text>
-        </Pressable>
+        {loading ? (
+          <ActivityIndicator color="#fff" size="large" style={styles.loader} />
+        ) : null}
+        <FlatList
+          data={coins}
+          renderItem={({ item }) => <CoinsItem item={item} />}
+        />
       </View>
     );
   }
@@ -49,5 +63,8 @@ const styles = StyleSheet.create({
   btnText: {
     color: '#fff',
     textAlign: 'center',
+  },
+  loader: {
+    marginTop: 60,
   },
 });
